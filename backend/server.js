@@ -10,28 +10,34 @@ const connectDB = require('./db');
 require('dotenv').config();
 const cors = require('cors');
 
-const allowedOrigins = ['https://collectam-frontend.vercel.app', 'http://localhost:3000'];
+const allowedOrigins = [
+  'https://collectam-frontend.vercel.app',
+  'http://localhost:3000' // pour le dev local
+];
 
 const corsOptions = {
   origin: function(origin, callback) {
+    // autorise les requêtes sans origin (ex: Postman)
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
-      callback(null, origin);
+      callback(null, origin); // autorise l'origine spécifique
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true,
+  credentials: true, // autorise les cookies et credentials
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200 // pour compatibilité avec certains navigateurs
 };
 
+// Ajout de l'en-tête Vary pour la bonne mise en cache
 app.use((req, res, next) => {
   res.header('Vary', 'Origin');
   next();
 });
 
+// Middleware CORS global
 app.use(cors(corsOptions));
 
 
@@ -57,11 +63,6 @@ const locationRoutes = require('./routes/location');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.post('/api/saveLocation', (req, res) => {
-  // Ton code de sauvegarde
-  res.status(201).json({ message: 'Position sauvegardée' });
-});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/trucks', truckRoutes);
