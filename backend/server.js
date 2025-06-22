@@ -10,26 +10,29 @@ const connectDB = require('./db');
 require('dotenv').config();
 const cors = require('cors');
 
-const allowedOrigins = ['https://collectam-frontend.vercel.app', 'http://localhost:3000']; // ajoute localhost pour dev
+const allowedOrigins = ['https://collectam-frontend.vercel.app', 'http://localhost:3000'];
 
 const corsOptions = {
   origin: function(origin, callback) {
-    if (!origin) return callback(null, true); // autorise Postman ou serveurs sans origin
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `L'origine ${origin} n'est pas autorisée par CORS.`;
-      return callback(new Error(msg), false);
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, origin);
+    } else {
+      callback(new Error('Not allowed by CORS'));
     }
-    return callback(null, true);
   },
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  optionsSuccessStatus: 200
 };
 
-app.use(cors(corsOptions));
+app.use((req, res, next) => {
+  res.header('Vary', 'Origin');
+  next();
+});
 
-// Gestion des requêtes OPTIONS (preflight)
-app.options('*catchall', cors(corsOptions));
+app.use(cors(corsOptions));
 
 
 const io = socketIo(server, {
@@ -48,21 +51,12 @@ io.on('connection', (socket) => {
   })
 })
 
-
-
-
 const authRoutes = require('./routes/auth');
 const truckRoutes = require('./routes/truck');
 const locationRoutes = require('./routes/location');
 
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-
-
-
 
 app.use('/api/auth', authRoutes);
 app.use('/api/trucks', truckRoutes);
