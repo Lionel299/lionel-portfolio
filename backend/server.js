@@ -8,6 +8,14 @@ const server = http.createServer(app);
 const socketIo = require('socket.io');
 const connectDB = require('./db');
 require('dotenv').config();
+const cors = require('cors');
+
+const corsOptions = {
+  origin: 'https://collectam-frontend.vercel.app',
+  optionsSuccessStatus: 200 // pour compatibilité avec certains navigateurs
+};
+
+app.use(cors(corsOptions));
 
 const io = socketIo(server, { cors: { origin: '*' } })
 
@@ -22,8 +30,7 @@ const authRoutes = require('./routes/auth');
 const truckRoutes = require('./routes/truck');
 const locationRoutes = require('./routes/location');
 
-const cors = require('cors');
-app.use(cors({ origin: 'https://https://collectam-frontend.vercel.app' }));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
