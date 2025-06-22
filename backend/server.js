@@ -58,6 +58,11 @@ const locationRoutes = require('./routes/location');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.post('/api/saveLocation', (req, res) => {
+  // Ton code de sauvegarde
+  res.status(201).json({ message: 'Position sauvegardée' });
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/trucks', truckRoutes);
 app.use('/api/location', locationRoutes)
