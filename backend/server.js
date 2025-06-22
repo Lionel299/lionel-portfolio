@@ -23,10 +23,8 @@ const truckRoutes = require('./routes/truck');
 const locationRoutes = require('./routes/location');
 
 const cors = require('cors');
-app.use(cors({
-  origin: 'http://localhost:8080',
-  credentials: true
-}));
+app.use(cors({ origin: 'https://https://collectam-frontend.vercel.app' }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
