@@ -10,14 +10,33 @@ const connectDB = require('./db');
 require('dotenv').config();
 const cors = require('cors');
 
-const corsOptions = {
-  origin: 'https://collectam-frontend.vercel.app',
-  optionsSuccessStatus: 200 // pour compatibilité avec certains navigateurs
-};
+const allowedOrigins = ['https://collectam-frontend.vercel.app', 'http://localhost:3000']; // ajoute localhost pour dev
 
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: function(origin, callback){
+    // autorise les requêtes sans origin (ex: Postman) ou celles dans la liste
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      const msg = `L'origine ${origin} n'est pas autorisée par CORS.`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 
-const io = socketIo(server, { cors: { origin: '*' } })
+
+
+const io = socketIo(server, {
+  cors: {
+    origin: allowedOrigins,
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  }
+});
 
 io.on('connection', (socket) => {
   socket.on('newLocation', (data) => {
