@@ -10,7 +10,7 @@ services:
       - key: MONGODB_URI
         sync: false
 
-  - type: static_site
+  - type: web
     name: post
     repo: https://github.com/lionel299/post
     branch: main
