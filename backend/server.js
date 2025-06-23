@@ -12,7 +12,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { saveLocation } = require('./controllers/locationController');
 
-const allowedOrigins = ['https://collectam-frontend.vercel.app', 'http://localhost:3000'];
+const allowedOrigins = ['https://collectam-frontend-e29zowplv-lionels-projects-61e91f4d.vercel.app/', 'http://localhost:8080'];
 
 const corsOptions = {
   origin: function(origin, callback) {
