@@ -43,7 +43,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/trucks', truckRoutes);
 app.use('/api/location', locationRoutes)
 app.use('/api/wastes', require('./backend/routes/waste'));
-app.use('/api/collections', require('./backend/routes/Collection'));
+app.use('/api/collections', require('./backend/routes/collection'));
 // Ajouter les autres routes...
 
 
