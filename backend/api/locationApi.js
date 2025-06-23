@@ -20,7 +20,7 @@ const corsOptions = {
     if (allowedOrigins.indexOf(origin) === -1) {
       return callback(new Error('Origine non autorisée par la politique CORS'), false);
     }
-    return callback(null, true);
+    return callback(null, origin);
   },
   credentials: true,
   methods: ['POST', 'OPTIONS'],

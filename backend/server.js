@@ -29,7 +29,7 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // Route POST pour enregistrer la localisation
@@ -40,7 +40,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors(corsOptions));
+
 
 
 
