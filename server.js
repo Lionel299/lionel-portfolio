@@ -42,7 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/trucks', truckRoutes);
 app.use('/api/location', locationRoutes)
-app.use('/api/wastes', require('./backend/routes/Waste'));
+app.use('/api/wastes', require('./backend/routes/waste'));
 app.use('/api/collections', require('./backend/routes/Collection'));
 // Ajouter les autres routes...
 
