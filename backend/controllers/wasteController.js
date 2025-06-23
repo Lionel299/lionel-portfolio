@@ -1,4 +1,4 @@
-const Waste = require('../models/waste');
+const Waste = require('../models/wasteModel');
 
 // Créer un déchet
 exports.createWaste = async (req, res) => {

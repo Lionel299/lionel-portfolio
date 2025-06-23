@@ -1,6 +1,6 @@
 // controllers/authController.js
-const User = require('../models/User');
-const Truck = require('../models/Truck');
+const User = require('../models/userModel');
+const Truck = require('../models/truckModel');
 const bcrypt = require('bcryptjs');
 
 exports.register = async (req, res) => {

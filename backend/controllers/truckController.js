@@ -1,4 +1,4 @@
-const Truck = require('../models/truck');
+const Truck = require('../models/truckModel');
 
 
 

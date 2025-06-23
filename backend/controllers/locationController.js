@@ -1,6 +1,6 @@
 
 
-const Location = require('../models/Location'); // chemin vers ton modèle
+const Location = require('../models/locationModel'); // chemin vers ton modèle
 
 exports.saveLocation = async (req, res) => {
   try {
