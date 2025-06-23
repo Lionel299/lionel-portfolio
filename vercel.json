@@ -1,13 +1,12 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "api/**/*.js", "use": "@vercel/node" },
-    { "src": "post/package.json", "use": "@vercel/static-build" }
-  ],
+  "buildCommand": "npm run build --prefix post",
+  "outputDirectory": "post/dist",
   "rewrites": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/(.*)", "dest": "/post/$1" }
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)", "destination": "/post/$1" }
   ]
 }
+
 
 

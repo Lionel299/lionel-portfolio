@@ -50,4 +50,4 @@ app.use('/api/collections', require('./backend/routes/Collection'));
 //connexion BDD
 connectDB();
 
-module.exports = app;
+app.listen(port, () => console.log(`Server running on port ${port}`));

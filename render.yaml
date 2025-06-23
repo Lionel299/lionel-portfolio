@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: collectam
+    repo: https://github.com/lionel299/collectam
+    branch: main
+    buildCommand: npm run server
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+
+  - type: static
+    name: post
+    repo: https://github.com/lionel299/post
+    branch: main
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VUE_APP_API_URL
+        value: https://backend.onrender.com
