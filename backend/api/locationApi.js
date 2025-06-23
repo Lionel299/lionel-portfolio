@@ -1,21 +1,42 @@
+const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
-const { saveLocation } = require('../controllers/locationController');
+const { saveLocation } = require('./controllers/locationController');
 
-// Cache global pour la connexion
-let cached = global.mongoose;
-if (!cached) cached = global.mongoose = { conn: null, promise: null };
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
 // Liste blanche des origines autorisées
 const allowedOrigins = [
-  'http://localhost:8080', // dev local
+  'http://localhost:8080',
   'https://collectam-frontend-e29zowplv-lionels-projects-61e91f4d.vercel.app'
 ];
 
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error('Origine non autorisée par la politique CORS'), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
+
+// Connexion MongoDB avec cache global
+let cached = global.mongoose;
+if (!cached) cached = global.mongoose = { conn: null, promise: null };
+
 async function connectToDatabase() {
   if (cached.conn) return cached.conn;
-  
+
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
@@ -27,42 +48,22 @@ async function connectToDatabase() {
   return cached.conn;
 }
 
-module.exports = async (req, res) => {
-  const origin = req.headers.origin;
-
-  // Vérifie si l'origine est dans la liste blanche
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-
-  if (req.method === 'OPTIONS') {
-    // Répondre aux pré-requêtes CORS
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Méthode non autorisée' });
-  }
-
+// Middleware pour connecter à la base avant les routes
+app.use(async (req, res, next) => {
   try {
     await connectToDatabase();
     console.log('Connexion DB établie');
-
-    const { latitude, longitude, deviceId } = req.body;
-    if (typeof latitude !== 'number' || typeof longitude !== 'number') {
-      return res.status(400).json({ error: 'Latitude et longitude doivent être des nombres valides' });
-    }
-
-    const position = await saveLocation({ latitude, longitude, deviceId });
-    console.log('Position enregistrée:', position);
-
-    res.status(200).json({ message: 'Position enregistrée', position });
+    next();
   } catch (error) {
-    console.error('Erreur:', error);
+    console.error('Erreur connexion DB:', error);
     res.status(500).json({ error: 'Erreur serveur' });
   }
-};
+});
+
+// Route POST pour enregistrer la localisation
+app.post('/api/location/saveLocation', saveLocation);
+
+// Démarrer le serveur
+app.listen(PORT, () => {
+  console.log(`Serveur démarré sur http://localhost:${PORT}`);
+});

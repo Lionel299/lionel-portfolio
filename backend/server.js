@@ -9,6 +9,8 @@ const socketIo = require('socket.io');
 const connectDB = require('./db');
 require('dotenv').config();
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const { saveLocation } = require('./controllers/locationController');
 
 const allowedOrigins = ['https://collectam-frontend.vercel.app', 'http://localhost:3000'];
 
@@ -26,6 +28,12 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200
 };
+
+
+app.use(bodyParser.json());
+
+// Route POST pour enregistrer la localisation
+app.post('/api/location/saveLocation', saveLocation);
 
 app.use((req, res, next) => {
   res.header('Vary', 'Origin');
