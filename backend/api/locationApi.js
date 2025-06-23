@@ -11,7 +11,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 // Liste blanche des origines autorisées
 const allowedOrigins = [
   'http://localhost:8080',
-  'https://collectam-frontend-e29zowplv-lionels-projects-61e91f4d.vercel.app'
+  'https://collectam-frontend.vercel.app'
 ];
 
 const corsOptions = {
