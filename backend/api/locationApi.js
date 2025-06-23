@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { savePosition } = require('../controllers/locationController');
+const { saveLocation } = require('../controllers/locationController');
 
 // Cache global pour la connexion
 let cached = global.mongoose;
@@ -50,7 +50,7 @@ module.exports = async (req, res) => {
     }
 
     // Si tu utilises deviceId dans ta logique métier, passe-le ici
-    const position = await savePosition({ latitude, longitude, deviceId });
+    const position = await saveLocation({ latitude, longitude, deviceId });
     console.log('Position enregistrée:', position);
 
     res.status(200).json({ message: 'Position enregistrée', position });
