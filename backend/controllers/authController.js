@@ -4,8 +4,6 @@ const Truck = require('../models/truck');
 const bcrypt = require('bcryptjs');
 
 exports.register = async (req, res) => {
-  console.log('Reçu dans register:', req.body);
-
   try {
     const {
       role,

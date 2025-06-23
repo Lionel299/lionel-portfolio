@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const truck = require('./truck');
 const userSchema = new mongoose.Schema({
   
-  name: String,
   firstName: { type: String },
   lastName: { type: String},
   email: { type: String, unique: true },
