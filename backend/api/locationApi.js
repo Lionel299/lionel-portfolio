@@ -7,8 +7,11 @@ if (!cached) cached = global.mongoose = { conn: null, promise: null };
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-// URL de ton frontend déployé (à remplacer par la tienne)
-const FRONTEND_URL = 'https://collectam-frontend-e29zowplv-lionels-projects-61e91f4d.vercel.app/';
+// Liste blanche des origines autorisées
+const allowedOrigins = [
+  'http://localhost:8080', // dev local
+  'https://collectam-frontend-e29zowplv-lionels-projects-61e91f4d.vercel.app'
+];
 
 async function connectToDatabase() {
   if (cached.conn) return cached.conn;
@@ -25,8 +28,13 @@ async function connectToDatabase() {
 }
 
 module.exports = async (req, res) => {
-  // Ajout des headers CORS sur toutes les requêtes
-  res.setHeader('Access-Control-Allow-Origin', FRONTEND_URL);
+  const origin = req.headers.origin;
+
+  // Vérifie si l'origine est dans la liste blanche
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -45,11 +53,10 @@ module.exports = async (req, res) => {
     console.log('Connexion DB établie');
 
     const { latitude, longitude, deviceId } = req.body;
-    if (!latitude || !longitude) {
-      return res.status(400).json({ error: 'Latitude et longitude requises' });
+    if (typeof latitude !== 'number' || typeof longitude !== 'number') {
+      return res.status(400).json({ error: 'Latitude et longitude doivent être des nombres valides' });
     }
 
-    // Si tu utilises deviceId dans ta logique métier, passe-le ici
     const position = await saveLocation({ latitude, longitude, deviceId });
     console.log('Position enregistrée:', position);
 
