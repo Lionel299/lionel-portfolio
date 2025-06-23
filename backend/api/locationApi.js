@@ -8,7 +8,7 @@ if (!cached) cached = global.mongoose = { conn: null, promise: null };
 const MONGODB_URI = process.env.MONGODB_URI;
 
 // URL de ton frontend déployé (à remplacer par la tienne)
-const FRONTEND_URL = 'https://collectam-frontend-e29zowplv-lionels-projects-61e91f4d.vercel.app';
+const FRONTEND_URL = 'https://collectam-frontend-e29zowplv-lionels-projects-61e91f4d.vercel.app/';
 
 async function connectToDatabase() {
   if (cached.conn) return cached.conn;
