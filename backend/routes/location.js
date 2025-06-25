@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const locationController = require('../controllers/locationController');
+const { saveLocation, getAllLocations } = require('../controllers/locationController');
 
-router.post('/saveLocation', locationController.saveLocation);
+router.post('/saveLocation', saveLocation);
+router.get('/all', getAllLocations);
 
 module.exports = router;
+
 
 
