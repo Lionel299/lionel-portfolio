@@ -39,10 +39,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
-
-
 const io = socketIo(server, {
   cors: {
     origin: allowedOrigins,
@@ -67,14 +63,8 @@ const authRoutes = require('./backend/routes/auth');
 const truckRoutes = require('./backend/routes/truck');
 const locationRoutes = require('./backend/routes/location');
 
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-
-
-
 
 app.use('/api/auth', authRoutes);
 app.use('/api/trucks', truckRoutes);
@@ -82,9 +72,6 @@ app.use('/api/location', locationRoutes)
 app.use('/api/wastes', require('./backend/routes/waste'));
 app.use('/api/collections', require('./backend/routes/collection'));
 // Ajouter les autres routes...
-
-
-
 
 // lancer le server
 server.listen(port, () => console.log("le serveur a demerrer au port  " + port));
