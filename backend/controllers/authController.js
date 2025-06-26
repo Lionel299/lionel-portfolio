@@ -1,7 +1,7 @@
-// controllers/authController.js
 const User = require('../models/userModel');
 const Truck = require('../models/truckModel');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
   try {
@@ -18,8 +18,12 @@ exports.register = async (req, res) => {
       vehicle
     } = req.body;
 
+    if (!email || !password || !role) {
+      return res.status(400).json({ error: 'Email, mot de passe et rôle sont obligatoires' });
+    }
+
     // Vérifier si l'utilisateur existe déjà
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       return res.status(400).json({ error: 'Email déjà utilisé' });
     }
@@ -32,18 +36,18 @@ exports.register = async (req, res) => {
       role,
       firstName,
       lastName,
-      email,
+      email: email.toLowerCase(),
       address,
       neighborhood,
       phone,
-      password: hashedPassword,
-      trucks: [] // initialisation du tableau trucks
+      password: hashedPassword,  // Assure-toi que dans ton modèle le champ s'appelle bien "password"
+      trucks: []
     });
 
     await user.save();
 
-    // Si c'est un collecteur avec véhicule, créer le véhicule et lier à l'utilisateur
-    if (role === 'collector' && hasVehicle && vehicle) {
+    // Si collecteur avec véhicule, créer le véhicule et lier à l'utilisateur
+    if (role === 'collector' && hasVehicle === true && vehicle) {
       const newTruck = new Truck({
         brand: vehicle.brand,
         registration: vehicle.registration,
@@ -63,19 +67,41 @@ exports.register = async (req, res) => {
   }
 };
 
-
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email et mot de passe sont obligatoires' });
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) return res.status(400).json({ error: 'Utilisateur non trouvé' });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ error: 'Mot de passe incorrect' });
 
-    // Tu peux ici générer un token JWT si besoin
-    res.json({ message: 'Connexion réussie', user: { email: user.email, role: user.role, firstName: user.firstName } });
+    // Générer un token JWT
+    const token = jwt.sign(
+      { userId: user._id, role: user.role, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    res.json({
+      message: 'Connexion réussie',
+      token,
+      user: {
+        email: user.email,
+        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        id: user._id
+      }
+    });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 };
+
