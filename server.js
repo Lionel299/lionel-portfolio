@@ -9,8 +9,10 @@ const socketIo = require('socket.io');
 const connectDB = require('./backend/db');
 require('dotenv').config();
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const { saveLocation } = require('./backend/controllers/locationController');
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = ['https://collectam-frontend.vercel.app', 'http://localhost:8080'];
 
@@ -31,8 +33,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Route POST pour enregistrer la localisation
-app.post('/api/location/saveLocation', saveLocation);
+
 
 app.use((req, res, next) => {
   res.header('Vary', 'Origin');
@@ -63,8 +64,14 @@ const authRoutes = require('./backend/routes/auth');
 const truckRoutes = require('./backend/routes/truck');
 const locationRoutes = require('./backend/routes/location');
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+
+
+
+// Route POST pour enregistrer la localisation
+app.post('/api/location/saveLocation', saveLocation);
+// Route pour récupérer toutes les localisations
+app.get('/api/location/all', locationController.getAllLocations);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/trucks', truckRoutes);
