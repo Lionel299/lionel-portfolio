@@ -1,5 +1,5 @@
 
-const port = 3000;
+const port = 3001;
 
 const express = require('express');
 const app = express();
@@ -9,7 +9,7 @@ const socketIo = require('socket.io');
 const connectDB = require('./backend/db');
 require('dotenv').config();
 const cors = require('cors');
-const { saveLocation } = require('./backend/controllers/locationController');
+const { saveLocation, getAllLocations } = require('./backend/controllers/locationController');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -71,7 +71,7 @@ const locationRoutes = require('./backend/routes/location');
 // Route POST pour enregistrer la localisation
 app.post('/api/location/saveLocation', saveLocation);
 // Route pour récupérer toutes les localisations
-app.get('/api/location/all', locationController.getAllLocations);
+app.get('/api/location/all', getAllLocations);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/trucks', truckRoutes);
