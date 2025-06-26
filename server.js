@@ -9,7 +9,6 @@ const socketIo = require('socket.io');
 const connectDB = require('./backend/db');
 require('dotenv').config();
 const cors = require('cors');
-const { saveLocation, getAllLocations } = require('./backend/controllers/locationController');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
