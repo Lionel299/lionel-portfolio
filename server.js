@@ -30,7 +30,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(bodyParser.json());
 
 // Route POST pour enregistrer la localisation
 app.post('/api/location/saveLocation', saveLocation);
@@ -60,7 +59,8 @@ io.on('connection', (socket) => {
   })
 })
 
-
+//connexion BDD
+connectDB();
 
 
 const authRoutes = require('./backend/routes/auth');
@@ -84,8 +84,7 @@ app.use('/api/collections', require('./backend/routes/collection'));
 // Ajouter les autres routes...
 
 
-//connexion BDD
-connectDB();
+
 
 // lancer le server
 server.listen(port, () => console.log("le serveur a demerrer au port  " + port));
