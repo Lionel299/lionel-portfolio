@@ -68,62 +68,15 @@ const locationRoutes = require('./backend/routes/location');
 
 
 app.use('/api/auth', authRoutes);
-console.log('Liste des routes déclarées :')
-app._router.stack.forEach((middleware) => {
-  if (middleware.route) {
-    console.log(middleware.route.path)
-  } else if (middleware.name === 'router') {
-    middleware.handle.stack.forEach((handler) => {
-      if (handler.route) {
-        console.log(handler.route.path)
-      }
-    })
-  }
-})
 
 app.use('/api/trucks', truckRoutes);
-console.log('Liste des routes déclarées :')
-app._router.stack.forEach((middleware) => {
-  if (middleware.route) {
-    console.log(middleware.route.path)
-  } else if (middleware.name === 'router') {
-    middleware.handle.stack.forEach((handler) => {
-      if (handler.route) {
-        console.log(handler.route.path)
-      }
-    })
-  }
-})
 
 app.use('/api/location', locationRoutes)
-console.log('Liste des routes déclarées :')
-app._router.stack.forEach((middleware) => {
-  if (middleware.route) {
-    console.log(middleware.route.path)
-  } else if (middleware.name === 'router') {
-    middleware.handle.stack.forEach((handler) => {
-      if (handler.route) {
-        console.log(handler.route.path)
-      }
-    })
-  }
-})
 
 app.use('/api/wastes', require('./backend/routes/waste'));
-console.log('Liste des routes déclarées :')
-app._router.stack.forEach((middleware) => {
-  if (middleware.route) {
-    console.log(middleware.route.path)
-  } else if (middleware.name === 'router') {
-    middleware.handle.stack.forEach((handler) => {
-      if (handler.route) {
-        console.log(handler.route.path)
-      }
-    })
-  }
-})
 
 app.use('/api/collections', require('./backend/routes/collection'));
+
 console.log('Liste des routes déclarées :')
 app._router.stack.forEach((middleware) => {
   if (middleware.route) {
