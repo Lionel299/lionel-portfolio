@@ -61,9 +61,10 @@ io.on('connection', (socket) => {
 //connexion BDD
 connectDB();
 
-
 const authRoutes = require('./backend/routes/auth');
+
 const truckRoutes = require('./backend/routes/truck');
+
 const locationRoutes = require('./backend/routes/location');
 
 
@@ -76,21 +77,6 @@ app.use('/api/location', locationRoutes)
 app.use('/api/wastes', require('./backend/routes/waste'));
 
 app.use('/api/collections', require('./backend/routes/collection'));
-
-console.log('Liste des routes déclarées :')
-app._router.stack.forEach((middleware) => {
-  if (middleware.route) {
-    console.log(middleware.route.path)
-  } else if (middleware.name === 'router') {
-    middleware.handle.stack.forEach((handler) => {
-      if (handler.route) {
-        console.log(handler.route.path)
-      }
-    })
-  }
-})
-
-// Ajouter les autres routes...
 
 // lancer le server
 server.listen(port, () => console.log("le serveur a demerrer au port  " + port));
