@@ -5,6 +5,9 @@ const userSchema = new mongoose.Schema({
   lastName: { type: String},
   email: { type: String, unique: true },
   password: String,
+  address: String,
+  neighborhood: String,
+  phone: String,
   role: { type: String, enum: ['citizen', 'collector', 'admin'], default: 'citizen' },
   trucks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Truck' }]
 }, { collection: 'auth_users' });

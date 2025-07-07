@@ -19,7 +19,7 @@ exports.saveLocation = async (req, res) => {
       await existingLocation.save();
       return res.status(200).json({ message: 'Position mise à jour.' });
     } else {
-      // Si pas encore enregistré, on crée avec userType
+      // Si pas encore enregistré, on crée a`vec userType
       const newLocation = new Location({
         latitude,
         longitude,
@@ -45,7 +45,6 @@ exports.getAllLocations = async (req, res) => {
     res.status(500).json({ error: 'Erreur serveur' });
   }
 };
-
 
 
 

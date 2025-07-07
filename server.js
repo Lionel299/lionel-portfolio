@@ -67,6 +67,11 @@ const truckRoutes = require('./backend/routes/truck');
 
 const locationRoutes = require('./backend/routes/location');
 
+const depotRoutes = require('./backend/routes/depot');
+
+
+// Routes
+app.use('/api/depots', depotRoutes);
 
 app.use('/api/auth', authRoutes);
 
