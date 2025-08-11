@@ -1,7 +1,7 @@
 services:
   - type: web
     name: collectam
-    repo: https://github.com/lionel299/lionel-portfolio
+    repo: https://github.com/lionel299/collectam
     branch: main
     runtime: node
     buildCommand: npm install
@@ -19,5 +19,5 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VUE_APP_API_URL
-        value: https://backend.onrender.com
+        value: https://collectam.onrender.com
 

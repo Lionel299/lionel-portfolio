@@ -15,7 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
   'https://collectam-frontend.vercel.app',
-  'http://localhost:8080'
+  'http://localhost:8080',
+  'http://192.168.1.181:8080'
 ];
 
 const corsOptions = {
