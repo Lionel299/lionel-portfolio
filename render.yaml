@@ -5,7 +5,7 @@ services:
     branch: main
     runtime: node
     buildCommand: npm install
-    startCommand: npm run server
+    startCommand: npm start
     envVars:
       - key: MONGODB_URI
         sync: false

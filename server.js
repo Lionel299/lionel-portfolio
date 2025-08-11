@@ -1,5 +1,6 @@
 
-const port = 3001;
+require('dotenv').config();
+const port = process.env.PORT || 3002;
 
 const express = require('express');
 const app = express();
@@ -7,7 +8,6 @@ const http = require('http');
 const server = http.createServer(app);
 const socketIo = require('socket.io');
 const connectDB = require('./backend/db');
-require('dotenv').config();
 const cors = require('cors');
 
 app.use(express.json());
@@ -15,11 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
   'https://collectam-frontend.vercel.app',
-   'http://localhost:8080'
-  ];
+  'http://localhost:8080'
+];
 
 const corsOptions = {
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
